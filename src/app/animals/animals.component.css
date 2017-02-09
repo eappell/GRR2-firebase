@@ -1,0 +1,12 @@
+.brick {
+  margin-top: 10px;
+  background-color: #333;
+  border-color: #333;
+  padding: 3px;
+  width: 17rem;
+}
+
+.brick:hover {
+  background-color: #666;
+  cursor: pointer;
+}

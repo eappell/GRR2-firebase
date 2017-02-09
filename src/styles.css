@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
+.help-block { background-color: firebrick; color: #fff; }
+.has-error { color: red; }
+.has-error input { border:1px solid #990000; }
+
+/*Bootstrap overrides*/
+.alert { padding: .5rem .8rem; margin: .2rem 0; }
+.app-container { margin-top: 70px; }

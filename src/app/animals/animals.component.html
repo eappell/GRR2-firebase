@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Collection</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <masonry #myMasonry [options]="masonryOptions" [useImagesLoaded]="true">
+        <masonry-brick *ngFor="let animal of animals; let i = index" class="brick card card-inverse">
+          <img src="http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key.substr(-2)}}/001.jpg" 
+            data-lightbox="collection" data-title="{{animal.$key}}" *ngIf="animal.productOfProject" alt="{{animal.$key}}"
+            class="card-img-top img-fluid" />
+          <img src="http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key}}/001.jpg" 
+            data-lightbox="collection" data-title="{{animal.$key}}" *ngIf="!animal.productOfProject" alt="{{animal.$key}}"
+            class="card-img-top img-fluid" />
+          <div class="card-block">
+            <h4 class="card-title">
+              {{ animal.$key }}
+            </h4>
+            <p class="card-text" [innerHTML]="animal.description | truncate : [100]"></p>
+            <a [routerLink]="['/animal', animal.$key]" class="btn btn-primary" *ngIf="animal.$key">{{ animal.$key }}</a>
+          </div>
+        </masonry-brick>
+      </masonry>
+    </div>
+  </div>
+</div>

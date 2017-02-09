@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <masonry #myMasonry [options]="masonryOptions" [useImagesLoaded]="true">
+        <masonry-brick *ngFor="let project of projects | async" class="brick card card-inverse">
+          <img src="/assets/images/projects/{{project.$key}}/001.jpg" [alt]="project.$key" class="card-img-top img-fluid">
+          <div class="card-block">
+            <h4 class="card-title">
+              {{ project.$key }} ({{project.eggs.hatched}})
+            </h4>
+            <p class="card-text" [innerHTML]="project.description | truncate : [130]"></p>
+            <a [routerLink]="['/project', project.$key]" class="btn btn-primary" *ngIf="project.$key">{{ project.$key }}</a>
+          </div>
+        </masonry-brick>
+      </masonry>
+    </div>
+  </div>
+</div>

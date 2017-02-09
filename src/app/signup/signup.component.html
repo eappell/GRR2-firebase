@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': !isLoggedIn, 'disabled': isLoggedIn}" data-toggle="tab" href="#login" role="tab">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'disabled': isLoggedIn}" data-toggle="tab" href="#signup" role="tab">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': isLoggedIn, 'disabled': !isLoggedIn}" data-toggle="tab" href="#logout" role="tab">Logout</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane card-block" id="login" [ngClass]="{'active': !isLoggedIn}" role="tabpanel">
+        <h4 class="card-title">Login</h4>
+        <div class="card-text">
+          <form novalidate (ngSubmit)="login()" [formGroup]="loginForm">
+            <div class="form-group row">
+              <label for="email" class="form-label col-md-3 text-right">Email</label>
+              <input type="text" class="form-control col-md-7" id="email" placeholder="Email" formControlName="email" />
+            </div>
+            <div class="form-group row">
+              <label for="password" class="form-label col-md-3 text-right">Password</label>
+              <input type="password" class="form-control col-md-7" id="password" formControlName="password" />
+            </div>
+            <button type="button" class="btn btn-primary" (click)="login()" [disabled]="!loginForm.valid">Login</button>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane card-block" id="signup" role="tabpanel">
+        <h4 class="card-title">Sign Up</h4>
+        <div class="card-text">
+          <form novalidate (ngSubmit)="signup()" [formGroup]="signupForm">
+            <div formGroupName="emailGroup" [ngClass]="{'has-error': signupForm.get('emailGroup').errors }" >
+              <div class="form-group row" [ngClass]="{'has-error': emailMessage }">
+                  <label class="col-md-3 control-label text-right" for="emailId">Email</label>
+                  <input type="email" class="col-md-7 form-control" id="emailId" placeholder="Email (required)" formControlName="email" />
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': emailMessage }">
+                <label class="col-md-3 control-label text-right" for="confirmEmailId">Confirm Email</label>
+                  <input type="email" class="col-md-7 form-control" id="confirmEmailId" placeholder="Confirm Email (required)" formControlName="confirmEmail" />
+              </div>
+              <div class="form-group row col-md-7 offset-md-3" *ngIf="(signupForm.get('emailGroup.confirmEmail').touched ||
+                                                          signupForm.get('emailGroup.confirmEmail').dirty) &&
+                                                          (signupForm.get('emailGroup.confirmEmail').errors ||
+                                                            signupForm.get('emailGroup').errors)">
+                <div class="alert alert-danger" role="alert">
+                  <span *ngIf="signupForm.get('emailGroup.confirmEmail').errors?.required">Please confirm your email address.<br/></span>
+                  <span *ngIf="signupForm.get('emailGroup').errors?.match">The confirmation does not match the email address.</span>
+                  {{ emailMessage }}
+                </div>
+              </div>
+            </div>
+
+            <div formGroupName="passwordGroup" [ngClass]="{'has-error': signupForm.get('passwordGroup').errors }" >
+              <div class="form-group row" [ngClass]="{'has-error': signupForm.get('passwordGroup').errors }">
+                <label for="password" class="control-label col-md-3 text-right">Password</label>
+                <input type="password" formControlName="password" class="form-control col-md-7" id="password" />
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': signupForm.get('passwordGroup').errors }">
+                <label for="confirmPassword" class="control-label col-md-3 text-right">Confirm Password</label>
+                <input type="password" formControlName="confirmPassword" class="form-control col-md-7" id="confirmPassword" />
+              </div>
+              <div class="form-group row col-md-7 offset-md-3" *ngIf="(signupForm.get('passwordGroup.confirmPassword').touched ||
+                                                          signupForm.get('passwordGroup.confirmPassword').dirty) &&
+                                                          (signupForm.get('passwordGroup.confirmPassword').errors ||
+                                                            signupForm.get('passwordGroup').errors)">
+                <div class="alert alert-danger" role="alert">
+                  <span *ngIf="signupForm.get('passwordGroup.confirmPassword').errors?.required">Please confirm your password.<br/></span>
+                  <span *ngIf="signupForm.get('passwordGroup').errors?.match">The confirmation does not match the password.</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="signup()" [disabled]="!signupForm.valid">Sign Up</button>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane card-block" [ngClass]="{'active': isLoggedIn}" id="logout" role="tabpanel">
+        <h4 class="card-title">Logout</h4>
+        <p class="card-text">
+          Are you sure you want to logout?
+        </p>
+        <a href="#" class="btn btn-primary" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+

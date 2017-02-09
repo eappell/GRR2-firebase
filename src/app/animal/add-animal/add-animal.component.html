@@ -1,0 +1,221 @@
+<form class="container" novalidate [formGroup]="addAnimalForm" (ngSubmit)="save()">
+  <fieldset>
+    <div>
+      <div class="form-group row" [ngClass]="{ 'has-error': addAnimalForm.get('name').touched || addAnimalForm.get('name').dirty }">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Name (required)" formControlName="name" />
+          <div class="alert alert-danger" role="alert" *ngIf="((addAnimalForm.get('name').touched || addAnimalForm.get('name').dirty) && addAnimalForm.get('name').errors)">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            <strong *ngIf="addAnimalForm.get('name').errors.required">
+                Please enter a Name.
+              </strong>
+            <strong *ngIf="addAnimalForm.get('name').errors.minlength">
+                The name must be at least 3 characters in length.
+              </strong>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{ 'has-error': (addAnimalForm.get('id').touched || addAnimalForm.get('id').dirty) }">
+        <label class="col-md-2 control-label">Tracking ID</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Tracking ID (required)" required formControlName="id" />
+          <div class="alert alert-danger" role="alert" *ngIf="((addAnimalForm.get('id').touched || addAnimalForm.get('id').dirty) && addAnimalForm.get('id').errors)">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            <strong *ngIf="addAnimalForm.get('id').errors.required">
+                Please enter a Tracking ID.
+              </strong>
+            <strong *ngIf="addAnimalForm.get('id').errors.maxlength">
+                Tracking ID can be no longer than 20 characters.
+              </strong>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label">Description</label>
+        <div class="col-md-8">
+          <textarea rows="5" cols="40" class="form-control" placeholder="Description" formControlName="description"></textarea>
+          <div class="alert alert-danger" role="alert" *ngIf="((addAnimalForm.get('description').touched || addAnimalForm.get('description').dirty) && addAnimalForm.get('description').errors)">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <strong *ngIf="addAnimalForm.get('description').errors.required">
+                Please enter a Description.
+            </strong>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label">DOB</label>
+        <div class="col-md-8">
+          <input type="date" class="form-control" placeholder="DOB" formControlName="dob">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="" class="col-md-2 control-label">
+          Send Notification
+        </label>
+        <div class="col-md-8 form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" value="email"
+                  formControlName="notification"> Email
+          </label>
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" value="text"
+                  formControlName="notification"> Text
+          </label>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error':
+                  (addAnimalForm.get('rating').touched || addAnimalForm.get('rating').dirty) &&
+                  !addAnimalForm.get('rating').valid}">
+        <label for="ratingId" class="col-md-2 control-label">Rating</label>
+        <div class="col-md-8">
+          <input type="number" class="form-control" id="ratingId" formControlName="rating" />
+          <span class="help-block" *ngIf="
+                  (addAnimalForm.get('rating').touched || addAnimalForm.get('rating').dirty) &&
+                  addAnimalForm.get('rating').errors">
+            <span *ngIf="addAnimalForm.get('rating').errors.range">
+                Please rate your experience from 1 to 5.
+              </span>
+            </span>
+        </div>
+      </div>
+      <div formGroupName="emailGroup" [ngClass]="{'has-error': addAnimalForm.get('emailGroup').errors }" >
+        <div class="form-group row" [ngClass]="{'has-error': emailMessage }">
+            <label class="col-md-2 control-label" for="emailId">Email</label>
+            <div class="col-md-8">
+              <input type="email" class="form-control" id="emailId" placeholder="Email (required)" formControlName="email" />
+              <div class="alert alert-danger" role="alert" *ngIf="emailMessage">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{ emailMessage }}
+              </div>
+          </div>
+        </div>
+        <div class="form-group row" [ngClass]="{'has-error': emailMessage }">
+          <label class="col-md-2 control-label" for="confirmEmailId">Confirm Email</label>
+          <div class="col-md-8">
+            <input type="email" class="form-control" id="confirmEmailId" placeholder="Confirm Email (required)" formControlName="confirmEmail" />
+            <div class="alert alert-danger" role="alert" *ngIf="emailMessage">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ emailMessage }}
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-4 offset-md-2">
+          <span>
+            <button class="btn btn-primary"
+                    type="button"
+                    [disabled]="!addresses.valid"
+                    (click)="addAddress()">
+              Add Another Address</button>
+          </span>
+        </div>
+      </div>
+
+      <div formArrayName="addresses" *ngFor="let address of addresses.controls; let i=index">
+          <div [formGroupName]="i">
+            <div class="form-group row" >
+                <label class="col-md-2 control-label">Address Type</label>
+                <div class="col-md-8 form-check form-check-inline">
+                  <label class="form-check-label">
+                      <input class="form-check-input" type="radio" id="addressType1Id" value="home"
+                          formControlName="addressType"> Home
+                  </label>
+                  <label class="form-check-label">
+                      <input class="form-check-input" type="radio" id="addressType1Id" value="work"
+                          formControlName="addressType"> Work
+                  </label>
+                  <label class="form-check-label">
+                      <input class="form-check-input" type="radio" id="addressType1Id" value="other"
+                          formControlName="addressType"> Other
+                  </label>
+                </div>
+            </div>
+
+          <div class="form-group row">
+              <label class="col-md-2 control-label"
+                  attr.for ="{{ 'street1Id' + i }}">Street Address 1</label>
+              <div class="col-md-8">
+                  <input type="text"
+                      class="form-control"
+                      id="{{ 'street1Id' + i }}"
+                      placeholder="Street address"
+                      formControlName="street1">
+              </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 control-label"
+                    attr.for="{{ 'street2Id' + i }}">Street Address 2</label>
+                <div class="col-md-8">
+                    <input type="text"
+                        class="form-control"
+                        id="{{ 'street2Id' + i }}"
+                        placeholder="Street address (second line)"
+                        formControlName="street2">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 control-label"
+                    attr.for="{{ 'cityId' + i }}">City, State, Zip Code</label>
+                <div class="col-md-4">
+                    <input type="text"
+                        class="form-control"
+                        id="{{ 'cityId' + i }}"
+                        placeholder="City"
+                        formControlName="city">
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control"
+                            id="{{ 'stateId' + i }}"
+                            formControlName="state">
+                        <option value="" disabled selected hidden>Select a State...</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                <input type="number"
+                        class="form-control"
+                        id="{{ 'zipId' + i }}"
+                        placeholder="Zip Code"
+                        formControlName="zip">
+                </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-4 offset-md-2">
+          <button class="btn btn-primary" type="submit" [disabled]="!addAnimalForm.valid">
+            Save
+          </button>
+          <button class="btn btn-default" type="button" (click)="populateTestData()">
+            Test Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+Dirty: {{ addAnimalForm.dirty }}<br/> Touched: {{ addAnimalForm.touched }}<br/> Valid: {{ addAnimalForm.valid }}<br/> Value:
+{{ addAnimalForm.value | json }}<br/>

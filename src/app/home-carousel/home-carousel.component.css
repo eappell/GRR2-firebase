@@ -1,0 +1,14 @@
+h3 {
+  display: inline-block;
+  padding: 10px;
+}
+
+.full-screen {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Bootstrap 4 Overrides */
+.carousel { height: 400px; }
+.carousel-inner { height: 400px; }

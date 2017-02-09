@@ -1,0 +1,1857 @@
+webpackJsonp([0,3],{
+
+/***/ 274:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_animal_service__ = __webpack_require__(96);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ProjectService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ProjectService = (function () {
+    function ProjectService(af, animalSvc) {
+        this.af = af;
+        this.animalSvc = animalSvc;
+        this.projects = af.database.list('/projects');
+    }
+    ProjectService.prototype.getProjects = function () {
+        return this.projects;
+    };
+    ProjectService.prototype.getProject = function (key) {
+        return this.af.database.object('/projects/' + key);
+    };
+    ProjectService.prototype.addProject = function (project) {
+        return this.projects.push(project);
+    };
+    ProjectService.prototype.deleteProject = function (project) {
+        return this.projects.remove(project);
+    };
+    ProjectService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */]) === 'function' && _b) || Object])
+    ], ProjectService);
+    return ProjectService;
+    var _a, _b;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/project.service.js.map
+
+/***/ },
+
+/***/ 438:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_model__ = __webpack_require__(449);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__ = __webpack_require__(872);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AddAnimalComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+function emailMatcher(c) {
+    var emailControl = c.get('email');
+    var confirmControl = c.get('confirmEmail');
+    if (emailControl.pristine || confirmControl.pristine) {
+        return null;
+    }
+    if (emailControl.value === confirmControl.value) {
+        return null;
+    }
+    return { 'match': true };
+}
+function ratingRange(min, max) {
+    return function (c) {
+        if (c.value !== undefined && (isNaN(c.value) || c.value < min || c.value > max)) {
+            return { 'range': true };
+        }
+        ;
+        return null;
+    };
+}
+var AddAnimalComponent = (function () {
+    function AddAnimalComponent(fb) {
+        this.fb = fb;
+        this.animal = new __WEBPACK_IMPORTED_MODULE_2__common_model__["b" /* Animal */]();
+        this.validationMessages = {
+            required: 'Please enter an email address.',
+            pattern: 'Please enter a valid email address.'
+        };
+    }
+    Object.defineProperty(AddAnimalComponent.prototype, "addresses", {
+        get: function () {
+            return this.addAnimalForm.get('addresses');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AddAnimalComponent.prototype.addAddress = function () {
+        this.addresses.push(this.buildAddress());
+    };
+    AddAnimalComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.addAnimalForm = this.fb.group({
+            name: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].minLength(3)]],
+            id: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].maxLength(20)]],
+            description: '',
+            notification: 'Email',
+            dateAdded: new Date(),
+            emailGroup: this.fb.group({
+                email: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].pattern('[a-z0-9._%+_]+@[a-z0-9.-]+')]],
+                confirmEmail: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
+            }, { validator: emailMatcher }),
+            dob: '',
+            rating: ['', ratingRange(1, 5)],
+            availability: this.fb.group({
+                start: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
+                end: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required]
+            }),
+            addresses: this.fb.array([this.buildAddress()])
+        });
+        // Watch the notification control for changes
+        this.addAnimalForm.get('notification').valueChanges
+            .subscribe(function (value) { return _this.setNotifications(value); });
+        // Watch the email group of controls for changes
+        var emailControl = this.addAnimalForm.get('emailGroup.email');
+        emailControl.valueChanges.debounceTime(1000).subscribe(function (value) { return _this.setMessage(emailControl); });
+    };
+    AddAnimalComponent.prototype.setMessage = function (c) {
+        var _this = this;
+        this.emailMessage = '';
+        if ((c.touched || c.dirty) && c.errors) {
+            this.emailMessage = Object.keys(c.errors).map(function (key) {
+                return _this.validationMessages[key];
+            }).join(' ');
+        }
+    };
+    AddAnimalComponent.prototype.buildAddress = function () {
+        return this.fb.group({
+            addressType: 'home',
+            street1: '',
+            street2: '',
+            city: '',
+            state: '',
+            zip: ''
+        });
+    };
+    AddAnimalComponent.prototype.populateTestData = function () {
+        this.addAnimalForm.setValue({
+            name: 'Jack Straw',
+            id: 'GRR1109',
+            description: 'Wonderful animal and very friendly.',
+            dateAdded: new Date(),
+            dob: '2011-09-01'
+        });
+    };
+    AddAnimalComponent.prototype.setNotifications = function (type) {
+        var description = this.addAnimalForm.get('description');
+        if (type === 'email') {
+            description.setValidators(__WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required);
+        }
+        else {
+            description.clearValidators();
+        }
+        description.updateValueAndValidity();
+    };
+    AddAnimalComponent.prototype.save = function () {
+        console.log(this.addAnimalForm);
+        console.log('Saved: ' + JSON.stringify(this.addAnimalForm.value));
+    };
+    AddAnimalComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-add-animal',
+            template: __webpack_require__(853),
+            styles: [__webpack_require__(840)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormBuilder */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormBuilder */]) === 'function' && _a) || Object])
+    ], AddAnimalComponent);
+    return AddAnimalComponent;
+    var _a;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/add-animal.component.js.map
+
+/***/ },
+
+/***/ 439:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_animal_service__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__update_animal_update_animal_component__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__(178);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AnimalComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+var AnimalComponent = (function () {
+    function AnimalComponent(animalService, router, route, modalService, auth) {
+        this.animalService = animalService;
+        this.router = router;
+        this.route = route;
+        this.modalService = modalService;
+        this.auth = auth;
+    }
+    AnimalComponent.prototype.getAnimal = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            var id = params['id'];
+            _this.animalService.getAnimal(id).subscribe(function (animal) { _this.animal = animal; }, function (error) { return _this.errorMessage = error; });
+        });
+    };
+    AnimalComponent.prototype.openUpdateAnimal = function () {
+        var addAdnimalModalRef = this.modalService.open(__WEBPACK_IMPORTED_MODULE_3__update_animal_update_animal_component__["a" /* UpdateAnimalComponent */], { size: 'lg' });
+        addAdnimalModalRef.componentInstance.animal = this.animal;
+    };
+    AnimalComponent.prototype.onBack = function () {
+        this.router.navigate(['/animals']);
+    };
+    AnimalComponent.prototype.ngOnInit = function () {
+        this.getAnimal();
+    };
+    AnimalComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-animal',
+            template: __webpack_require__(854),
+            styles: [__webpack_require__(841)]
+        }),
+        __param(4, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_4_angularfire2__["a" /* FirebaseAuth */])), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4_angularfire2__["a" /* FirebaseAuth */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4_angularfire2__["a" /* FirebaseAuth */]) === 'function' && _e) || Object])
+    ], AnimalComponent);
+    return AnimalComponent;
+    var _a, _b, _c, _d, _e;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/animal.component.js.map
+
+/***/ },
+
+/***/ 440:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_model__ = __webpack_require__(449);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_animal_service__ = __webpack_require__(96);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UpdateAnimalComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var UpdateAnimalComponent = (function () {
+    function UpdateAnimalComponent(_animalService) {
+        this._animalService = _animalService;
+    }
+    UpdateAnimalComponent.prototype.updateAnimal = function () {
+        var _this = this;
+        this._animalService.updateAnimal(this.animal.id, this.animal)
+            .then(function (resolve) { return _this.animalUpdated(resolve); }, function (error) { return _this.errorUpdating(error); });
+    };
+    UpdateAnimalComponent.prototype.animalUpdated = function (status) {
+    };
+    UpdateAnimalComponent.prototype.errorUpdating = function (error) {
+    };
+    UpdateAnimalComponent.prototype.ngOnInit = function () {
+        this.mask = ['$', /[1-9]/, /\d/, /\d?/, /\d?/];
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_model__["IAnimal"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__common_model__["IAnimal"]) === 'function' && _a) || Object)
+    ], UpdateAnimalComponent.prototype, "animal", void 0);
+    UpdateAnimalComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-update-animal',
+            template: __webpack_require__(855),
+            styles: [__webpack_require__(842)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_animal_service__["a" /* AnimalService */]) === 'function' && _b) || Object])
+    ], UpdateAnimalComponent);
+    return UpdateAnimalComponent;
+    var _a, _b;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/update-animal.component.js.map
+
+/***/ },
+
+/***/ 441:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_animal_service__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_masonry__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_masonry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular2_masonry__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AnimalsComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var AnimalsComponent = (function () {
+    function AnimalsComponent(animalService, us, router) {
+        this.animalService = animalService;
+        this.us = us;
+        this.router = router;
+        this.masonryOptions = {
+            transitionDuration: '0.5s',
+            itemSelector: '.brick',
+            gutter: 10
+        };
+    }
+    AnimalsComponent.prototype.getAnimal = function (key) {
+        this.animalService.getAnimal(key)
+            .subscribe(function (results) {
+            return results;
+        });
+    };
+    AnimalsComponent.prototype.addAnimal = function (animal) {
+        console.log('popup add animal form');
+        // this.animalService.addAnimal(animal)
+        //   .then(results => { return results; })
+        //   .catch(error => { return error; });
+    };
+    AnimalsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.us.isAuthenticated().subscribe(function (status) { return _this.isLoggedIn = status; });
+        if (!this.isLoggedIn) {
+            this.router.navigate(['/']);
+        }
+        else {
+            this.animalService.getAnimals().subscribe(function (results) { _this.animals = results; }, function (error) { return console.log(error); });
+        }
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_4_angular2_masonry__["AngularMasonry"]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4_angular2_masonry__["AngularMasonry"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4_angular2_masonry__["AngularMasonry"]) === 'function' && _a) || Object)
+    ], AnimalsComponent.prototype, "masonry", void 0);
+    AnimalsComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-animals',
+            template: __webpack_require__(856),
+            styles: [__webpack_require__(843)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_animal_service__["a" /* AnimalService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__services_animal_service__["a" /* AnimalService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _d) || Object])
+    ], AnimalsComponent);
+    return AnimalsComponent;
+    var _a, _b, _c, _d;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/animals.component.js.map
+
+/***/ },
+
+/***/ 442:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CustomerComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var CustomerComponent = (function () {
+    function CustomerComponent() {
+    }
+    CustomerComponent.prototype.ngOnInit = function () {
+    };
+    CustomerComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-customer',
+            template: __webpack_require__(858),
+            styles: [__webpack_require__(845)]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], CustomerComponent);
+    return CustomerComponent;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/customer.component.js.map
+
+/***/ },
+
+/***/ 443:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return HomeComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var HomeComponent = (function () {
+    function HomeComponent() {
+    }
+    HomeComponent.prototype.ngOnInit = function () {
+    };
+    HomeComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-home',
+            template: __webpack_require__(860),
+            styles: [__webpack_require__(847)]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], HomeComponent);
+    return HomeComponent;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/home.component.js.map
+
+/***/ },
+
+/***/ 444:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__ = __webpack_require__(178);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return LoginComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var LoginComponent = (function () {
+    function LoginComponent(router, 
+        // private routerLink: RouterLink,
+        userService, route, activeModal) {
+        this.router = router;
+        this.userService = userService;
+        this.route = route;
+        this.activeModal = activeModal;
+        this.model = {};
+        this.loading = false;
+    }
+    LoginComponent.prototype.ngOnInit = function () {
+        // reset login status
+        // this.redirect = localStorage.getItem('lastRoute');
+        this.redirect = this.route.snapshot.params['redirect'];
+        this.userService.logout();
+    };
+    LoginComponent.prototype.login = function () {
+        var _this = this;
+        this.loading = true;
+        this.userService
+            .login(this.model.username, this.model.password)
+            .then(function () { return _this.loginSuccess(); }, function (error) { return _this.loginFail(error); });
+    };
+    LoginComponent.prototype.loginSuccess = function () {
+        if (this.redirect) {
+            this.activeModal.dismiss();
+            this.router.navigateByUrl(this.redirect);
+        }
+        else {
+            this.activeModal.dismiss();
+        }
+    };
+    LoginComponent.prototype.loginFail = function (error) {
+        this.loading = false;
+        alert(error.message);
+        // this.activeModal.dismiss();
+        this.loading = false;
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __metadata('design:type', String)
+    ], LoginComponent.prototype, "returnRoute", void 0);
+    LoginComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-login',
+            template: __webpack_require__(861),
+            styles: [__webpack_require__(848)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__["b" /* NgbActiveModal */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__["b" /* NgbActiveModal */]) === 'function' && _d) || Object])
+    ], LoginComponent);
+    return LoginComponent;
+    var _a, _b, _c, _d;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/login.component.js.map
+
+/***/ },
+
+/***/ 445:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_masonry__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_masonry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_masonry__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_project_service__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_animal_service__ = __webpack_require__(96);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ProjectComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var ProjectComponent = (function () {
+    function ProjectComponent(projectSvc, animalSvc, router, route, sanitizer) {
+        this.projectSvc = projectSvc;
+        this.animalSvc = animalSvc;
+        this.router = router;
+        this.route = route;
+        this.sanitizer = sanitizer;
+        this.masonryOptions = {
+            transitionDuration: '0.5s',
+            itemSelector: '.brick',
+            gutter: 5,
+            columnWidth: 10
+        };
+    }
+    ProjectComponent.prototype.getProject = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            var id = params['id'];
+            _this.projectSvc.getProject(id).subscribe(function (project) {
+                _this.project = project;
+            }, function (error) { return _this.errorMessage = error; });
+        });
+    };
+    ProjectComponent.prototype.filterOffspring = function (animal, projectKey) {
+        // Return true if don't want this job in the results.
+        // e.g. lets filter jobs with price < 25;
+        return animal.productOfProject !== projectKey;
+    };
+    ProjectComponent.prototype.onBack = function () {
+        this.router.navigate(['/projects']);
+    };
+    ProjectComponent.prototype.ngOnInit = function () {
+        this.getProject();
+        this.offspring = this.animalSvc.getAnimals();
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_3_angular2_masonry__["AngularMasonry"]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_masonry__["AngularMasonry"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3_angular2_masonry__["AngularMasonry"]) === 'function' && _a) || Object)
+    ], ProjectComponent.prototype, "masonry", void 0);
+    ProjectComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-project',
+            template: __webpack_require__(862),
+            styles: [__webpack_require__(849)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_animal_service__["a" /* AnimalService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__services_animal_service__["a" /* AnimalService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["b" /* DomSanitizer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["b" /* DomSanitizer */]) === 'function' && _f) || Object])
+    ], ProjectComponent);
+    return ProjectComponent;
+    var _a, _b, _c, _d, _e, _f;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/project.component.js.map
+
+/***/ },
+
+/***/ 446:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_masonry__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_masonry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular2_masonry__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_project_service__ = __webpack_require__(274);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ProjectsComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ProjectsComponent = (function () {
+    function ProjectsComponent(projectService, sanitizer) {
+        this.projectService = projectService;
+        this.sanitizer = sanitizer;
+        this.masonryOptions = {
+            transitionDuration: '0.5s',
+            itemSelector: '.brick',
+            gutter: 10
+        };
+        var projects = projectService.getProjects().map(function (projects) { return projects.sort(function (a, b) { return b.DateStart - a.DateStart; }); });
+        this.projects = projects;
+    }
+    ProjectsComponent.prototype.getProject = function (key) {
+        this.projectService.getProject(key)
+            .subscribe(function (results) {
+            return results;
+        });
+    };
+    ProjectsComponent.prototype.addProject = function (project) {
+        this.projectService.addProject(project)
+            .then(function (results) { return results; })
+            .catch(function (error) { return error; });
+    };
+    ProjectsComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_2_angular2_masonry__["AngularMasonry"]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2_angular2_masonry__["AngularMasonry"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2_angular2_masonry__["AngularMasonry"]) === 'function' && _a) || Object)
+    ], ProjectsComponent.prototype, "masonry", void 0);
+    ProjectsComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-projects',
+            template: __webpack_require__(863),
+            styles: [__webpack_require__(850)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_service__["a" /* ProjectService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__services_project_service__["a" /* ProjectService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DomSanitizer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DomSanitizer */]) === 'function' && _c) || Object])
+    ], ProjectsComponent);
+    return ProjectsComponent;
+    var _a, _b, _c;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/projects.component.js.map
+
+/***/ },
+
+/***/ 447:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_service__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_take__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_take___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_take__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AuthGuard; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var AuthGuard = (function () {
+    function AuthGuard(auth, af, router, route) {
+        this.auth = auth;
+        this.af = af;
+        this.router = router;
+        this.route = route;
+    }
+    AuthGuard.prototype.canActivate = function (route, state) {
+        var _this = this;
+        return this.auth.isAuthenticated().map(function (auth) {
+            if (!auth) {
+                // console.log('not authenticated!');
+                _this.router.navigate(['/signup']);
+                return false;
+            }
+            // console.log('authenticated!');
+            return true;
+        }).take(1);
+    };
+    AuthGuard = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__user_service__["a" /* UserService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2_angularfire2__["b" /* AngularFire */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _d) || Object])
+    ], AuthGuard);
+    return AuthGuard;
+    var _a, _b, _c, _d;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/auth.guard.js.map
+
+/***/ },
+
+/***/ 448:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(50);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SignupComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+function emailMatcher(c) {
+    var emailControl = c.get('email');
+    var confirmControl = c.get('confirmEmail');
+    if (emailControl.pristine || confirmControl.pristine) {
+        return null;
+    }
+    if (emailControl.value === confirmControl.value) {
+        return null;
+    }
+    return { 'match': true };
+}
+var SignupComponent = (function () {
+    function SignupComponent(af, us, router, fb, auth) {
+        var _this = this;
+        this.af = af;
+        this.us = us;
+        this.router = router;
+        this.fb = fb;
+        this.auth = auth;
+        this.validationMessages = {
+            required: 'Please enter an email address.',
+            pattern: 'Please enter a valid email address.'
+        };
+        this.us.isAuthenticated().subscribe(function (loggedIn) { return _this.isLoggedIn = loggedIn; });
+    }
+    SignupComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.signupForm = this.fb.group({
+            emailGroup: this.fb.group({
+                email: ['', [__WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].pattern('[a-z0-9._%+_]+@[a-z0-9.-]+')]],
+                confirmEmail: ['', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required]
+            }, { validator: emailMatcher }),
+            passwordGroup: this.fb.group({
+                password: ['', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required],
+                confirmPassword: ['', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required] })
+        });
+        this.loginForm = this.fb.group({
+            email: ['', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required],
+            password: ['', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* Validators */].required]
+        });
+        var emailControl = this.signupForm.get('emailGroup.email');
+        emailControl.valueChanges.debounceTime(1000).subscribe(function (value) { return _this.setMessage(emailControl); });
+    };
+    SignupComponent.prototype.setMessage = function (c) {
+        var _this = this;
+        this.emailMessage = '';
+        if ((c.touched || c.dirty) && c.errors) {
+            this.emailMessage = Object.keys(c.errors).map(function (key) {
+                return _this.validationMessages[key];
+            }).join(' <br/>');
+            console.log(this.emailMessage);
+        }
+    };
+    SignupComponent.prototype.signup = function () {
+        var _this = this;
+        var email = this.signupForm.get('emailGroup.email').value;
+        var password = this.signupForm.get('passwordGroup.password').value;
+        var authorized = this.us.signUp(email, password).then(function (response) {
+            console.log('you\'re signed up!');
+            console.log(response);
+            _this.router.navigate(['']);
+        })
+            .catch(function (error) { return console.log('SignUp Error', error); });
+    };
+    SignupComponent.prototype.login = function () {
+        var _this = this;
+        var email = this.loginForm.get('email').value;
+        var password = this.loginForm.get('password').value;
+        this.us.login(email, password)
+            .then(function (response) {
+            if (response) {
+                localStorage.setItem('refreshToken', response.auth.refreshToken);
+                localStorage.setItem('uid', response.auth.uid);
+                console.log('logged in successfully');
+                _this.router.navigate(['']);
+            }
+            else {
+                console.log('NOT logged in');
+            }
+        });
+    };
+    SignupComponent.prototype.logout = function () {
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('uid');
+        this.us.logout();
+        this.router.navigate(['/signup']);
+    };
+    SignupComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-signup',
+            template: __webpack_require__(864),
+            styles: [__webpack_require__(851)]
+        }),
+        __param(4, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */])), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1_angularfire2__["b" /* AngularFire */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_forms__["d" /* FormBuilder */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_forms__["d" /* FormBuilder */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */]) === 'function' && _e) || Object])
+    ], SignupComponent);
+    return SignupComponent;
+    var _a, _b, _c, _d, _e;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/signup.component.js.map
+
+/***/ },
+
+/***/ 449:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return Animal; });
+/* unused harmony export Project */
+/* unused harmony export IncubationType */
+/* unused harmony export EventCategory */
+/* unused harmony export Status */
+var Animal = (function () {
+    function Animal(dateAdded, description, dob, id, name, species, speciesLatin, status) {
+        if (dateAdded === void 0) { dateAdded = new Date(); }
+        if (description === void 0) { description = ''; }
+        if (dob === void 0) { dob = new Date(); }
+        if (id === void 0) { id = ''; }
+        if (name === void 0) { name = ''; }
+        if (species === void 0) { species = ''; }
+        if (speciesLatin === void 0) { speciesLatin = ''; }
+        if (status === void 0) { status = Status.InCollection; }
+    }
+    return Animal;
+}());
+var Project = (function () {
+    function Project() {
+    }
+    return Project;
+}());
+var IncubationType;
+(function (IncubationType) {
+    IncubationType[IncubationType["Maternal"] = 0] = "Maternal";
+    IncubationType[IncubationType["Artificial"] = 1] = "Artificial";
+    IncubationType[IncubationType["Combination"] = 2] = "Combination";
+    IncubationType[IncubationType["Other"] = 3] = "Other";
+})(IncubationType || (IncubationType = {}));
+var EventCategory;
+(function (EventCategory) {
+    EventCategory[EventCategory["Feeding"] = 1] = "Feeding";
+    EventCategory[EventCategory["Breeding"] = 2] = "Breeding";
+    EventCategory[EventCategory["Husbandry"] = 3] = "Husbandry";
+    EventCategory[EventCategory["Health"] = 4] = "Health";
+    EventCategory[EventCategory["BodilyFunctions"] = 5] = "BodilyFunctions";
+    EventCategory[EventCategory["Miscellaneous"] = 6] = "Miscellaneous";
+})(EventCategory || (EventCategory = {}));
+var Status;
+(function (Status) {
+    Status[Status["InCollection"] = 0] = "InCollection";
+    Status[Status["Deceased"] = 1] = "Deceased";
+    Status[Status["Sold"] = 2] = "Sold";
+    Status[Status["PaymentHold"] = 3] = "PaymentHold";
+    Status[Status["FeedingHold"] = 4] = "FeedingHold";
+    Status[Status["Holdback"] = 5] = "Holdback";
+    Status[Status["BreedingLoan"] = 6] = "BreedingLoan";
+    Status[Status["Available"] = 7] = "Available";
+})(Status || (Status = {}));
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/model.js.map
+
+/***/ },
+
+/***/ 528:
+/***/ function(module, exports) {
+
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 528;
+
+
+/***/ },
+
+/***/ 529:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polyfills_ts__ = __webpack_require__(659);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polyfills_ts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__polyfills_ts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(617);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(658);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_app_module__ = __webpack_require__(651);
+
+
+
+
+
+if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production) {
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["enableProdMode"])();
+}
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_4__app_app_module__["a" /* AppModule */]);
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/main.js.map
+
+/***/ },
+
+/***/ 650:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login_component__ = __webpack_require__(444);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_user_service__ = __webpack_require__(97);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AppComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+var AppComponent = (function () {
+    function AppComponent(modalService, userService, router, auth) {
+        this.modalService = modalService;
+        this.userService = userService;
+        this.router = router;
+        this.auth = auth;
+    }
+    AppComponent.prototype.openLogin = function () {
+        var _this = this;
+        this.modalService.open(__WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */], { size: 'sm' }).result.then(function (result) {
+            console.log(result);
+        }, function (reason) {
+            _this.getDismissReason(reason);
+        });
+    };
+    AppComponent.prototype.logout = function () {
+        if (confirm('Are you sure you want to log out?')) {
+            this.userService.logout();
+            this.router.navigate(['/signup']);
+        }
+    };
+    AppComponent.prototype.ngOnInit = function () {
+    };
+    AppComponent.prototype.getDismissReason = function (reason) {
+        console.log(reason);
+        // if (reason === ModalDismissReasons.ESC) {
+        //   return 'by pressing ESC';
+        // } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        //   return 'by clicking on a backdrop';
+        // } else {
+        //   return  `with: ${reason}`;
+        // }
+        return true;
+    };
+    AppComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-root',
+            template: __webpack_require__(857),
+            styles: [__webpack_require__(844)]
+        }),
+        __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_3_angularfire2__["a" /* FirebaseAuth */])), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__services_user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__services_user_service__["a" /* UserService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2__["a" /* FirebaseAuth */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3_angularfire2__["a" /* FirebaseAuth */]) === 'function' && _d) || Object])
+    ], AppComponent);
+    return AppComponent;
+    var _a, _b, _c, _d;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/app.component.js.map
+
+/***/ },
+
+/***/ 651:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(613);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing__ = __webpack_require__(652);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_common__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(650);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__animals_animals_component__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_animal_service__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__login_login_component__ = __webpack_require__(444);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_user_service__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_project_service__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_photo_service__ = __webpack_require__(654);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_auth_guard__ = __webpack_require__(447);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_angularfire2_angularfire2__ = __webpack_require__(456);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__common_config__ = __webpack_require__(656);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__projects_projects_component__ = __webpack_require__(446);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__home_home_component__ = __webpack_require__(443);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_angular2_masonry__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_angular2_masonry___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_angular2_masonry__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_angular2_moment__ = __webpack_require__(660);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_angular2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_angular2_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ng_bootstrap_ng_bootstrap__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__common_truncate__ = __webpack_require__(657);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__animal_animal_component__ = __webpack_require__(439);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__animal_add_animal_add_animal_component__ = __webpack_require__(438);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__animal_update_animal_update_animal_component__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__signup_signup_component__ = __webpack_require__(448);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__customer_customer_component__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__project_project_component__ = __webpack_require__(445);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__home_carousel_home_carousel_component__ = __webpack_require__(653);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__users_users_component__ = __webpack_require__(655);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AppModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var fbAuthConfig = {
+    provider: __WEBPACK_IMPORTED_MODULE_14_angularfire2_angularfire2__["d" /* AuthProviders */].Password,
+    method: __WEBPACK_IMPORTED_MODULE_14_angularfire2_angularfire2__["e" /* AuthMethods */].Password
+};
+var AppModule = (function () {
+    function AppModule() {
+        this.masonryOptions = {
+            transitionDuration: '0.8s',
+            gutter: 35
+        };
+    }
+    AppModule = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__animals_animals_component__["a" /* AnimalsComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__projects_projects_component__["a" /* ProjectsComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_21__common_truncate__["a" /* TruncatePipe */],
+                __WEBPACK_IMPORTED_MODULE_22__animal_animal_component__["a" /* AnimalComponent */],
+                __WEBPACK_IMPORTED_MODULE_23__animal_add_animal_add_animal_component__["a" /* AddAnimalComponent */],
+                __WEBPACK_IMPORTED_MODULE_24__animal_update_animal_update_animal_component__["a" /* UpdateAnimalComponent */],
+                __WEBPACK_IMPORTED_MODULE_25__signup_signup_component__["a" /* SignupComponent */],
+                __WEBPACK_IMPORTED_MODULE_26__customer_customer_component__["a" /* CustomerComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__login_login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_27__project_project_component__["a" /* ProjectComponent */],
+                __WEBPACK_IMPORTED_MODULE_28__home_carousel_home_carousel_component__["a" /* HomeCarouselComponent */],
+                __WEBPACK_IMPORTED_MODULE_29__users_users_component__["a" /* UsersComponent */]
+            ],
+            providers: [
+                __WEBPACK_IMPORTED_MODULE_13__services_auth_guard__["a" /* AuthGuard */],
+                __WEBPACK_IMPORTED_MODULE_4__app_routing__["a" /* appRoutingProviders */],
+                __WEBPACK_IMPORTED_MODULE_8__services_animal_service__["a" /* AnimalService */],
+                __WEBPACK_IMPORTED_MODULE_11__services_project_service__["a" /* ProjectService */],
+                __WEBPACK_IMPORTED_MODULE_20__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */],
+                __WEBPACK_IMPORTED_MODULE_10__services_user_service__["a" /* UserService */],
+                __WEBPACK_IMPORTED_MODULE_12__services_photo_service__["a" /* PhotoService */],
+                { provide: __WEBPACK_IMPORTED_MODULE_5__angular_common__["c" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_5__angular_common__["f" /* HashLocationStrategy */] }
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["c" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_4__app_routing__["b" /* routing */],
+                __WEBPACK_IMPORTED_MODULE_19_angular2_moment__["MomentModule"],
+                __WEBPACK_IMPORTED_MODULE_18_angular2_masonry__["MasonryModule"],
+                __WEBPACK_IMPORTED_MODULE_20__ng_bootstrap_ng_bootstrap__["c" /* NgbModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_14_angularfire2_angularfire2__["f" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_15__common_config__["a" /* config */].firebase, fbAuthConfig)
+            ],
+            entryComponents: [
+                __WEBPACK_IMPORTED_MODULE_9__login_login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_24__animal_update_animal_update_animal_component__["a" /* UpdateAnimalComponent */],
+                __WEBPACK_IMPORTED_MODULE_23__animal_add_animal_add_animal_component__["a" /* AddAnimalComponent */]
+            ],
+            exports: [__WEBPACK_IMPORTED_MODULE_21__common_truncate__["a" /* TruncatePipe */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], AppModule);
+    return AppModule;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/app.module.js.map
+
+/***/ },
+
+/***/ 652:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_guard__ = __webpack_require__(447);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__animal_animal_component__ = __webpack_require__(439);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__animal_add_animal_add_animal_component__ = __webpack_require__(438);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__animals_animals_component__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__ = __webpack_require__(446);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__project_project_component__ = __webpack_require__(445);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home_component__ = __webpack_require__(443);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__customer_customer_component__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__signup_signup_component__ = __webpack_require__(448);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return appRoutingProviders; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return routing; });
+
+
+
+
+
+
+
+
+
+
+var appRoutes = [
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_7__home_home_component__["a" /* HomeComponent */] },
+    { path: 'signup', component: __WEBPACK_IMPORTED_MODULE_9__signup_signup_component__["a" /* SignupComponent */] },
+    { path: 'animal/:id', component: __WEBPACK_IMPORTED_MODULE_2__animal_animal_component__["a" /* AnimalComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'animals/add', component: __WEBPACK_IMPORTED_MODULE_3__animal_add_animal_add_animal_component__["a" /* AddAnimalComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'animals', component: __WEBPACK_IMPORTED_MODULE_4__animals_animals_component__["a" /* AnimalsComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'projects', component: __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__["a" /* ProjectsComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'project/:id', component: __WEBPACK_IMPORTED_MODULE_6__project_project_component__["a" /* ProjectComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'customer', component: __WEBPACK_IMPORTED_MODULE_8__customer_customer_component__["a" /* CustomerComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__services_auth_guard__["a" /* AuthGuard */]] },
+    // otherwise redirect to home
+    { path: '**', redirectTo: '' }
+];
+var appRoutingProviders = [];
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forRoot(appRoutes);
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/app.routing.js.map
+
+/***/ },
+
+/***/ 653:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(830);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return HomeCarouselComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var HomeCarouselComponent = (function () {
+    function HomeCarouselComponent() {
+    }
+    HomeCarouselComponent.prototype.ngOnInit = function () {
+    };
+    HomeCarouselComponent.prototype.setupCarousel = function () {
+        var $item = __WEBPACK_IMPORTED_MODULE_1_jquery__('.carousel .item');
+        var $wHeight = __WEBPACK_IMPORTED_MODULE_1_jquery__(window).height();
+        $item.eq(0).addClass('active');
+        $item.height('400px');
+        $item.addClass('full-screen');
+        __WEBPACK_IMPORTED_MODULE_1_jquery__('.carousel img').each(function () {
+            var $src = __WEBPACK_IMPORTED_MODULE_1_jquery__(this).attr('src');
+            var $color = __WEBPACK_IMPORTED_MODULE_1_jquery__(this).attr('data-color');
+            __WEBPACK_IMPORTED_MODULE_1_jquery__(this).parent().css({
+                'background-image': 'url(' + $src + ')',
+                'background-color': $color
+            });
+            __WEBPACK_IMPORTED_MODULE_1_jquery__(this).remove();
+        });
+        __WEBPACK_IMPORTED_MODULE_1_jquery__(window).on('resize', function () {
+            $wHeight = __WEBPACK_IMPORTED_MODULE_1_jquery__(window).height();
+            $item.height($wHeight);
+        });
+        // $('.carousel').carousel({
+        //   interval: 6000,
+        //   pause: "false"
+        // });    
+    };
+    HomeCarouselComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-home-carousel',
+            template: __webpack_require__(859),
+            styles: [__webpack_require__(846)]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], HomeCarouselComponent);
+    return HomeCarouselComponent;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/home-carousel.component.js.map
+
+/***/ },
+
+/***/ 654:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PhotoService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var PhotoService = (function () {
+    function PhotoService(af) {
+        this.af = af;
+        this.photos = af.database.list('/photos');
+    }
+    PhotoService.prototype.getPhotos = function () {
+        return this.photos;
+    };
+    PhotoService.prototype.getPhoto = function (key) {
+        return this.af.database.object(key);
+    };
+    PhotoService.prototype.addPhoto = function (photo) {
+        return this.photos.push(photo);
+    };
+    PhotoService.prototype.deletPhoto = function (photo) {
+        return this.photos.remove(photo);
+    };
+    PhotoService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */]) === 'function' && _a) || Object])
+    ], PhotoService);
+    return PhotoService;
+    var _a;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/photo.service.js.map
+
+/***/ },
+
+/***/ 655:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UsersComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var UsersComponent = (function () {
+    function UsersComponent() {
+    }
+    UsersComponent.prototype.ngOnInit = function () {
+    };
+    UsersComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-users',
+            template: __webpack_require__(865),
+            styles: [__webpack_require__(852)]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], UsersComponent);
+    return UsersComponent;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/users.component.js.map
+
+/***/ },
+
+/***/ 656:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return config; });
+var config = {
+    addAnimalUrl: "https://wt-webdev-appell-com-0.run.webtask.io/add-animal-bundle",
+    absoluteAnimalsUrl: "https://gold-river-reptile.firebaseio.com/animals",
+    absoluteProjectsUrl: "https://gold-river-reptile.firebaseio.com/projects",
+    firebase: {
+        apiKey: "AIzaSyBHUHIFoL9iaUL9URgmwQSDhxb25FNaS74",
+        authDomain: "gold-river-reptile.firebaseapp.com",
+        databaseURL: "https://gold-river-reptile.firebaseio.com",
+        storageBucket: "gold-river-reptile.appspot.com",
+        messagingSenderId: "532612706385"
+    }
+};
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/config.js.map
+
+/***/ },
+
+/***/ 657:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return TruncatePipe; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TruncatePipe = (function () {
+    function TruncatePipe() {
+    }
+    TruncatePipe.prototype.transform = function (value, args) {
+        var limit = args.length > 0 ? parseInt(args[0], 10) : 40;
+        var trail = args.length > 1 ? args[1] : '...';
+        return value.length > limit ? value.substring(0, limit) + trail : value;
+    };
+    TruncatePipe = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+            name: 'truncate'
+        }), 
+        __metadata('design:paramtypes', [])
+    ], TruncatePipe);
+    return TruncatePipe;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/truncate.js.map
+
+/***/ },
+
+/***/ 658:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return environment; });
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --env=prod` then `environment.prod.ts` will be used instead.
+// The list of which env maps to which file can be found in `angular-cli.json`.
+var environment = {
+    production: false
+};
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/environment.js.map
+
+/***/ },
+
+/***/ 659:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_es6_symbol__ = __webpack_require__(684);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_es6_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_core_js_es6_symbol__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_core_js_es6_object__ = __webpack_require__(677);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_core_js_es6_object___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_core_js_es6_object__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_core_js_es6_function__ = __webpack_require__(673);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_core_js_es6_function___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_core_js_es6_function__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_core_js_es6_parse_int__ = __webpack_require__(679);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_core_js_es6_parse_int___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_core_js_es6_parse_int__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_core_js_es6_parse_float__ = __webpack_require__(678);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_core_js_es6_parse_float___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_core_js_es6_parse_float__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_core_js_es6_number__ = __webpack_require__(676);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_core_js_es6_number___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_core_js_es6_number__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_core_js_es6_math__ = __webpack_require__(675);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_core_js_es6_math___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_core_js_es6_math__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_core_js_es6_string__ = __webpack_require__(683);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_core_js_es6_string___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_core_js_es6_string__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_core_js_es6_date__ = __webpack_require__(672);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_core_js_es6_date___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_core_js_es6_date__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_core_js_es6_array__ = __webpack_require__(671);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_core_js_es6_array___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_core_js_es6_array__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_core_js_es6_regexp__ = __webpack_require__(681);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_core_js_es6_regexp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_core_js_es6_regexp__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_core_js_es6_map__ = __webpack_require__(674);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_core_js_es6_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_core_js_es6_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_core_js_es6_set__ = __webpack_require__(682);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_core_js_es6_set___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_core_js_es6_set__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_core_js_es6_reflect__ = __webpack_require__(680);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_core_js_es6_reflect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_core_js_es6_reflect__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_core_js_es7_reflect__ = __webpack_require__(685);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_core_js_es7_reflect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_core_js_es7_reflect__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_zone_js_dist_zone__ = __webpack_require__(930);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_zone_js_dist_zone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_zone_js_dist_zone__);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/polyfills.js.map
+
+/***/ },
+
+/***/ 840:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 841:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 842:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 843:
+/***/ function(module, exports) {
+
+module.exports = ".brick {\r\n  margin-top: 10px;\r\n  background-color: #333;\r\n  border-color: #333;\r\n  padding: 3px;\r\n  width: 17rem;\r\n}\r\n\r\n.brick:hover {\r\n  background-color: #666;\r\n  cursor: pointer;\r\n}\r\n"
+
+/***/ },
+
+/***/ 844:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 845:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 846:
+/***/ function(module, exports) {
+
+module.exports = "h3 {\r\n  display: inline-block;\r\n  padding: 10px;\r\n}\r\n\r\n.full-screen {\r\n  background-size: cover;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n}"
+
+/***/ },
+
+/***/ 847:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 848:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 849:
+/***/ function(module, exports) {
+
+module.exports = ".brick {\r\n  margin-top: 5px;\r\n  background-color: #333;\r\n  border-color: #333;\r\n  padding: 4px;\r\n  width: 12rem;\r\n}\r\n\r\n.brick:hover {\r\n  background-color: #666;\r\n  cursor: pointer;\r\n}\r\n"
+
+/***/ },
+
+/***/ 850:
+/***/ function(module, exports) {
+
+module.exports = ".brick {\r\n  margin-top: 10px;\r\n  background-color: #333;\r\n  border-color: #333;\r\n  padding: 3px;\r\n  width: 17rem;\r\n}\r\n\r\n.brick:hover {\r\n  background-color: #666;\r\n  cursor: pointer;\r\n}\r\n"
+
+/***/ },
+
+/***/ 851:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 852:
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ 853:
+/***/ function(module, exports) {
+
+module.exports = "<form class=\"container\" novalidate [formGroup]=\"addAnimalForm\" (ngSubmit)=\"save()\">\n  <fieldset>\n    <div>\n      <div class=\"form-group row\" [ngClass]=\"{ 'has-error': addAnimalForm.get('name').touched || addAnimalForm.get('name').dirty }\">\n        <label class=\"col-md-2 control-label\">Name</label>\n        <div class=\"col-md-8\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Name (required)\" formControlName=\"name\" />\n          <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"((addAnimalForm.get('name').touched || addAnimalForm.get('name').dirty) && addAnimalForm.get('name').errors)\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            <strong *ngIf=\"addAnimalForm.get('name').errors.required\">\n                Please enter a Name.\n              </strong>\n            <strong *ngIf=\"addAnimalForm.get('name').errors.minlength\">\n                The name must be at least 3 characters in length.\n              </strong>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group row\" [ngClass]=\"{ 'has-error': (addAnimalForm.get('id').touched || addAnimalForm.get('id').dirty) }\">\n        <label class=\"col-md-2 control-label\">Tracking ID</label>\n        <div class=\"col-md-8\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Tracking ID (required)\" required formControlName=\"id\" />\n          <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"((addAnimalForm.get('id').touched || addAnimalForm.get('id').dirty) && addAnimalForm.get('id').errors)\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            <strong *ngIf=\"addAnimalForm.get('id').errors.required\">\n                Please enter a Tracking ID.\n              </strong>\n            <strong *ngIf=\"addAnimalForm.get('id').errors.maxlength\">\n                Tracking ID can be no longer than 20 characters.\n              </strong>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label class=\"col-md-2 control-label\">Description</label>\n        <div class=\"col-md-8\">\n          <textarea rows=\"5\" cols=\"40\" class=\"form-control\" placeholder=\"Description\" formControlName=\"description\"></textarea>\n          <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"((addAnimalForm.get('description').touched || addAnimalForm.get('description').dirty) && addAnimalForm.get('description').errors)\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <strong *ngIf=\"addAnimalForm.get('description').errors.required\">\n                Please enter a Description.\n            </strong>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label class=\"col-md-2 control-label\">DOB</label>\n        <div class=\"col-md-8\">\n          <input type=\"date\" class=\"form-control\" placeholder=\"DOB\" formControlName=\"dob\">\n        </div>\n      </div>\n      <div class=\"form-group row\">\n        <label for=\"\" class=\"col-md-2 control-label\">\n          Send Notification\n        </label>\n        <div class=\"col-md-8 form-check form-check-inline\">\n          <label class=\"form-check-label\">\n            <input class=\"form-check-input\" type=\"radio\" value=\"email\"\n                  formControlName=\"notification\"> Email\n          </label>\n          <label class=\"form-check-label\">\n            <input class=\"form-check-input\" type=\"radio\" value=\"text\"\n                  formControlName=\"notification\"> Text\n          </label>\n        </div>\n      </div>\n      <div class=\"form-group row\" [ngClass]=\"{'has-error':\n                  (addAnimalForm.get('rating').touched || addAnimalForm.get('rating').dirty) &&\n                  !addAnimalForm.get('rating').valid}\">\n        <label for=\"ratingId\" class=\"col-md-2 control-label\">Rating</label>\n        <div class=\"col-md-8\">\n          <input type=\"number\" class=\"form-control\" id=\"ratingId\" formControlName=\"rating\" />\n          <span class=\"help-block\" *ngIf=\"\n                  (addAnimalForm.get('rating').touched || addAnimalForm.get('rating').dirty) &&\n                  addAnimalForm.get('rating').errors\">\n            <span *ngIf=\"addAnimalForm.get('rating').errors.range\">\n                Please rate your experience from 1 to 5.\n              </span>\n            </span>\n        </div>\n      </div>\n      <div formGroupName=\"emailGroup\" [ngClass]=\"{'has-error': addAnimalForm.get('emailGroup').errors }\" >\n        <div class=\"form-group row\" [ngClass]=\"{'has-error': emailMessage }\">\n            <label class=\"col-md-2 control-label\" for=\"emailId\">Email</label>\n            <div class=\"col-md-8\">\n              <input type=\"email\" class=\"form-control\" id=\"emailId\" placeholder=\"Email (required)\" formControlName=\"email\" />\n              <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"emailMessage\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n                  <span aria-hidden=\"true\">&times;</span>\n                </button>\n                {{ emailMessage }}\n              </div>\n          </div>\n        </div>\n        <div class=\"form-group row\" [ngClass]=\"{'has-error': emailMessage }\">\n          <label class=\"col-md-2 control-label\" for=\"confirmEmailId\">Confirm Email</label>\n          <div class=\"col-md-8\">\n            <input type=\"email\" class=\"form-control\" id=\"confirmEmailId\" placeholder=\"Confirm Email (required)\" formControlName=\"confirmEmail\" />\n            <div class=\"alert alert-danger\" role=\"alert\" *ngIf=\"emailMessage\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n              {{ emailMessage }}\n          </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-group\">\n        <div class=\"col-md-4 offset-md-2\">\n          <span>\n            <button class=\"btn btn-primary\"\n                    type=\"button\"\n                    [disabled]=\"!addresses.valid\"\n                    (click)=\"addAddress()\">\n              Add Another Address</button>\n          </span>\n        </div>\n      </div>\n\n      <div formArrayName=\"addresses\" *ngFor=\"let address of addresses.controls; let i=index\">\n          <div [formGroupName]=\"i\">\n            <div class=\"form-group row\" >\n                <label class=\"col-md-2 control-label\">Address Type</label>\n                <div class=\"col-md-8 form-check form-check-inline\">\n                  <label class=\"form-check-label\">\n                      <input class=\"form-check-input\" type=\"radio\" id=\"addressType1Id\" value=\"home\"\n                          formControlName=\"addressType\"> Home\n                  </label>\n                  <label class=\"form-check-label\">\n                      <input class=\"form-check-input\" type=\"radio\" id=\"addressType1Id\" value=\"work\"\n                          formControlName=\"addressType\"> Work\n                  </label>\n                  <label class=\"form-check-label\">\n                      <input class=\"form-check-input\" type=\"radio\" id=\"addressType1Id\" value=\"other\"\n                          formControlName=\"addressType\"> Other\n                  </label>\n                </div>\n            </div>\n\n          <div class=\"form-group row\">\n              <label class=\"col-md-2 control-label\"\n                  attr.for =\"{{ 'street1Id' + i }}\">Street Address 1</label>\n              <div class=\"col-md-8\">\n                  <input type=\"text\"\n                      class=\"form-control\"\n                      id=\"{{ 'street1Id' + i }}\"\n                      placeholder=\"Street address\"\n                      formControlName=\"street1\">\n              </div>\n            </div>\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-2 control-label\"\n                    attr.for=\"{{ 'street2Id' + i }}\">Street Address 2</label>\n                <div class=\"col-md-8\">\n                    <input type=\"text\"\n                        class=\"form-control\"\n                        id=\"{{ 'street2Id' + i }}\"\n                        placeholder=\"Street address (second line)\"\n                        formControlName=\"street2\">\n                </div>\n            </div>\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-2 control-label\"\n                    attr.for=\"{{ 'cityId' + i }}\">City, State, Zip Code</label>\n                <div class=\"col-md-4\">\n                    <input type=\"text\"\n                        class=\"form-control\"\n                        id=\"{{ 'cityId' + i }}\"\n                        placeholder=\"City\"\n                        formControlName=\"city\">\n                </div>\n                <div class=\"col-md-2\">\n                    <select class=\"form-control\"\n                            id=\"{{ 'stateId' + i }}\"\n                            formControlName=\"state\">\n                        <option value=\"\" disabled selected hidden>Select a State...</option>\n                        <option value=\"AL\">Alabama</option>\n                        <option value=\"AK\">Alaska</option>\n                        <option value=\"AZ\">Arizona</option>\n                        <option value=\"AR\">Arkansas</option>\n                        <option value=\"CA\">California</option>\n                        <option value=\"CO\">Colorado</option>\n                        <option value=\"WI\">Wisconsin</option>\n                        <option value=\"WY\">Wyoming</option>\n                    </select>\n                </div>\n                <div class=\"col-md-2\">\n                <input type=\"number\"\n                        class=\"form-control\"\n                        id=\"{{ 'zipId' + i }}\"\n                        placeholder=\"Zip Code\"\n                        formControlName=\"zip\">\n                </div>\n            </div>\n          </div>\n      </div>\n\n      <div class=\"form-group row\">\n        <div class=\"col-md-4 offset-md-2\">\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!addAnimalForm.valid\">\n            Save\n          </button>\n          <button class=\"btn btn-default\" type=\"button\" (click)=\"populateTestData()\">\n            Test Data\n          </button>\n        </div>\n      </div>\n    </div>\n  </fieldset>\n</form>\nDirty: {{ addAnimalForm.dirty }}<br/> Touched: {{ addAnimalForm.touched }}<br/> Valid: {{ addAnimalForm.valid }}<br/> Value:\n{{ addAnimalForm.value | json }}<br/>\n"
+
+/***/ },
+
+/***/ 854:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-md-12\" *ngIf=\"animal\">\n      <div class=\"row\">\n        <div class=\"col-md-7\">\n          <h2>{{animal.name ? animal.name : animal.$key}}</h2>\n          <p>\n            DOB: {{animal.dob | amDateFormat: 'M-D-YYYY'}}\n          </p>\n          <p [innerHTML]=\"animal.description\"></p>\n          <p>\n            <button class=\"btn btn-default\" (click)=\"onBack()\">\n              <i class=\"fa fa-chevron-left\"></i>\n              Back\n            </button>\n            <button class=\"btn btn-primary\" *ngIf=\"auth | async\" (click)=\"openUpdateAnimal()\">\n              <i class=\"fa fa-pencil\"></i>\n              Edit/Update\n            </button>\n          </p>\n        </div>\n        <div class=\"col-md-5\">\n          <figure class=\"figure\">\n              <img src=\"/assets/images/{{animal.dob | amDateFormat: 'YY'}}/{{animal.$key.substr(-2)}}/001.jpg\" alt=\"{{animal.name ? animal.name : animal.$key}}\" *ngIf=\"animal.productOfProject\" class=\"img-fluid rounded\" />\n              <img src=\"/assets/images/{{animal.dob | amDateFormat: 'YY'}}/{{animal.$key}}/001.jpg\" alt=\"{{animal.name ? animal.name : animal.$key}}\" *ngIf=\"!animal.productOfProject\" class=\"img-fluid rounded\" />\n            <figcaption class=\"figure-caption\">{{animal.name ? animal.name : animal.$key}}</figcaption>\n          </figure>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n{{ animal | json }}\n"
+
+/***/ },
+
+/***/ 855:
+/***/ function(module, exports) {
+
+module.exports = "      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\" (click)=\"activeModal.dismiss('Cross click')\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n        <h2>Update {{animal.$key}}</h2>\n      </div>\n      <div class=\"modal-body\">\n        <form>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"trackingId\" class=\"col-form-label\">Tracking ID</label>\n            </div>\n            <div class=\"col-md-4\">\n              {{animal.$key}}\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Name\" class=\"col-form-label\">Name</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Name\" id=\"Name\" [(ngModel)]=\"animal.Name\" name=\"name\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"DOB\" class=\"col-form-label\">DOB</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <!--<input class=\"form-control\" placeholder=\"DOB\" name=\"DOB\" [(ngModel)]=\"animal.DOB\" ngbDatepicker #d=\"ngbDatepicker\">-->\n              <input type=\"date\" class=\"form-control\" placeholder=\"DOB\" id=\"DOB\" [(ngModel)]=\"animal.dob\" name=\"DOB\">\n              <!--<p-calendar name=\"DOB\" [ngModel]=\"animal.DOB\"></p-calendar>-->\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"DateAdded\" class=\"col-form-label\">Date Added</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <!--<input class=\"form-control\" placeholder=\"Date Added\" name=\"dateAdded\" [(ngModel)]=\"animal.DateAdded\" ngbDatepicker #d=\"ngbDatepicker\">-->\n              <input type=\"date\" class=\"form-control\" placeholder=\"Date Added\" id=\"DateAdded\" [(ngModel)]=\"animal.dateAdded\" name=\"dateAdded\">\n              <!--<p-calendar id=\"dateAdded\"></p-calendar>-->\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"DateRemoved\" class=\"col-form-label\">Date Removed</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"date\" class=\"form-control\" placeholder=\"Date Removed\" id=\"DateRemoved\" [(ngModel)]=\"animal.dateRemoved\" name=\"dateRemoved\">\n              <!--<p-calendar id=\"dateRemoved\"></p-calendar>-->\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Description\" class=\"col-form-label\">Description</label>\n            </div>\n            <div class=\"col-sm-10 col-md-10\">\n              <textarea class=\"form-control\" placeholder=\"Description\" rows=\"3\" cols=\"30\" id=\"Description\" [(ngModel)]=\"animal.description\" name=\"description\"></textarea>\n            </div>\n          </div>\n          <div class=\"form-group row\" *ngIf=\"animal.ProductOfProject\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"FatherId\" class=\"col-form-label\">Father</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Father ID\" id=\"FatherId\" [(ngModel)]=\"animal.productOfProject.Sire.Name\" name=\"fatherId\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\" *ngIf=\"animal.ProductOfProject\">\n              <label for=\"MotherId\" class=\"col-form-label\">Mother</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Mother ID\" id=\"MotherId\" [(ngModel)]=\"animal.ProductOfProject.Dam.Name\" name=\"motherId\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"gender\" class=\"col-form-label\">Gender</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <select class=\"form-control\" id=\"gender\" [(ngModel)]=\"animal.gender\" name=\"gender\">\n                <option value=\"male\">Male</option>\n                <option value=\"female\">Female</option>\n                <option value=\"unknown\">Unknown</option>\n              </select>\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Status\" class=\"col-form-label\">Status</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <select class=\"form-control\" id=\"status\" [(ngModel)]=\"animal.StatusId\" name=\"status\">\n                <option *ngFor=\"let status of statuses\" [value]=\"status.Id\">{{status.Name}}</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"HatchColor\" class=\"col-form-label\">Hatch Color</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Hatch Color\" id=\"HatchColor\" [(ngModel)]=\"animal.hatchColor\" name=\"hatchColor\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"HatchWeight\" class=\"col-form-label\">Hatch Weight</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Hatch Weight\" id=\"HatchWeight\" name=\"HatchWeight\" [(ngModel)]=\"animal.hatchWeight\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Lineage\" class=\"col-form-label\">Lineage</label>\n            </div>\n            <div class=\"col-sm-4 col-sm-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Lineage\" id=\"Lineage\" name=\"Lineage\" [(ngModel)]=\"animal.lineage\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Pairing\" class=\"col-form-label\">Pairing</label>\n            </div>\n            <div class=\"col-sm-4 col-sm-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Pairing\" id=\"Pairing\" name=\"Pairing\" [(ngModel)]=\"animal.pairing\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"PedigreePedigree\" class=\"col-form-label\">Pedigree</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Pedigree\" id=\"Pedigree\" name=\"Pedigree\" [(ngModel)]=\"animal.pedigree\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"Price\" class=\"col-form-label\">Price</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Price\" id=\"Price\" name=\"Price\" [(ngModel)]=\"animal.price\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n            <label for=\"Species\" class=\"col-form-label\">Species</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Species\" id=\"Species\" name=\"Species\" [(ngModel)]=\"animal.species\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n            <label for=\"SpeciesLatin\" class=\"col-form-label\">Species Latin</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Species Latin\" name=\"SpeciesLatin\" id=\"SpeciesLatin\" [(ngModel)]=\"animal.speciesLatin\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <div class=\"col-sm-2 col-md-2\">\n            <label for=\"Weight\" class=\"col-form-label\">Weight</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Weight\" id=\"Weight\" name=\"Weight\" [(ngModel)]=\"animal.weight\">\n            </div>\n            <div class=\"col-sm-2 col-md-2\">\n              <label for=\"ProductOfProject\" class=\"col-form-label\">From Project</label>\n            </div>\n            <div class=\"col-sm-4 col-md-4\" *ngIf=\"animal.productOfProject\">\n              <select class=\"form-control\" id=\"projects\" [(ngModel)]=\"animal.ProductOfProjectId\" name=\"projects\">\n                <option *ngFor=\"let project of projects\" [value]=\"project.Id\">{{project.DateStart | date: 'yyyy'}} - {{project.Sire.TrackingId}} x {{project.Dam.TrackingId}}</option>\n              </select>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"activeModal.close('Close click')\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\" (click)=\"updateAnimal(animal)\">Save changes</button>\n      </div>\n"
+
+/***/ },
+
+/***/ 856:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h3>Collection</h3>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <masonry #myMasonry [options]=\"masonryOptions\" [useImagesLoaded]=\"true\">\n        <masonry-brick *ngFor=\"let animal of animals; let i = index\" class=\"brick card card-inverse\">\n          <img src=\"http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key.substr(-2)}}/001.jpg\" \n            data-lightbox=\"collection\" data-title=\"{{animal.$key}}\" *ngIf=\"animal.productOfProject\" alt=\"{{animal.$key}}\"\n            class=\"card-img-top img-fluid\" />\n          <img src=\"http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key}}/001.jpg\" \n            data-lightbox=\"collection\" data-title=\"{{animal.$key}}\" *ngIf=\"!animal.productOfProject\" alt=\"{{animal.$key}}\"\n            class=\"card-img-top img-fluid\" />\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">\n              {{ animal.$key }}\n            </h4>\n            <p class=\"card-text\" [innerHTML]=\"animal.description | truncate : [100]\"></p>\n            <a [routerLink]=\"['/animal', animal.$key]\" class=\"btn btn-primary\" *ngIf=\"animal.$key\">{{ animal.$key }}</a>\n          </div>\n        </masonry-brick>\n      </masonry>\n    </div>\n  </div>\n</div>\n"
+
+/***/ },
+
+/***/ 857:
+/***/ function(module, exports) {
+
+module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top\">\n  <div class=\"navbar-header\">\n    <a class=\"navbar-brand\" routerLink=\"/\">\n      <img src=\"/assets/images/GRR_Logo_NoCircle_Sm.png\" alt=\"Gold River Reptile\" style=\"width:51px;\"> GRR\n    </a>\n  </div>\n  <ul class=\"nav navbar-nav\">\n    <li class=\"nav-item\"><a routerLink=\"/animals\" class=\"nav-link\">Collection</a></li>\n    <li class=\"nav-item\"><a routerLink=\"/projects\" class=\"nav-link\">Projects</a></li>\n    <li class=\"nav-item\"><a routerLink=\"/customer\" class=\"nav-link\">Customer Portal</a></li>\n  </ul>\n  <ul class=\"nav navbar-nav ml-auto\">\n    <li class=\"nav-item\">\n      <button class=\"btn btn-primary\" (click)=\"openLogin()\" *ngIf=\"!(auth | async)\">Login</button>\n      <button class=\"btn btn-primary\" (click)=\"logout()\" *ngIf=\"auth | async\">Logout</button>\n    </li>\n  </ul>\n</nav>\n<router-outlet></router-outlet>\n<template ngbModalContainer></template>\n"
+
+/***/ },
+
+/***/ 858:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\n  <h2>Customer Portal</h2>\n</div>\n    "
+
+/***/ },
+
+/***/ 859:
+/***/ function(module, exports) {
+
+module.exports = "<div id=\"mycarousel\" class=\"carousel slide full-screen\" data-ride=\"carousel\">\n  <!-- Indicators -->\n  <ol class=\"carousel-indicators\">\n    <li data-target=\"#mycarousel\" data-slide-to=\"0\" class=\"active\"></li>\n    <li data-target=\"#mycarousel\" data-slide-to=\"1\"></li>\n    <li data-target=\"#mycarousel\" data-slide-to=\"2\"></li>\n    <li data-target=\"#mycarousel\" data-slide-to=\"3\"></li>\n    <li data-target=\"#mycarousel\" data-slide-to=\"4\"></li>\n  </ol>\n\n  <!-- Wrapper for slides -->\n  <div class=\"carousel-inner\" role=\"listbox\">\n    <div class=\"carousel-item active\">\n        <img src=\"https://unsplash.it/2000/1250?image=397\" data-color=\"lightblue\" alt=\"First Image\" class=\"d-block img-fluid\">\n        <div class=\"carousel-caption\">\n            <h3>First Image</h3>\n        </div>\n    </div>\n    <div class=\"item\">\n        <img src=\"https://unsplash.it/2000/1250?image=689\" data-color=\"firebrick\" alt=\"Second Image\" class=\"d-block img-fluid\">\n        <div class=\"carousel-caption\">\n            <h3>Second Image</h3>\n        </div>\n    </div>\n    <div class=\"item\">\n        <img src=\"https://unsplash.it/2000/1250?image=675\" data-color=\"violet\" alt=\"Third Image\" class=\"d-block img-fluid\">\n        <div class=\"carousel-caption\">\n            <h3>Third Image</h3>\n        </div>\n    </div>\n    <div class=\"item\">\n        <img src=\"https://unsplash.it/2000/1250?image=658\" data-color=\"lightgreen\" alt=\"Fourth Image\" class=\"d-block img-fluid\">\n        <div class=\"carousel-caption\">\n            <h3>Fourth Image</h3>\n        </div>\n    </div>\n    <div class=\"item\">\n        <img src=\"https://unsplash.it/2000/1250?image=638\" data-color=\"tomato\" alt=\"Fifth Image\" class=\"d-block img-fluid\">\n        <div class=\"carousel-caption\">\n            <h3>Fifth Image</h3>\n        </div>\n    </div>\n  </div>\n\n  <!-- Controls -->\n  <a class=\"left carousel-control\" href=\"#mycarousel\" role=\"button\" data-slide=\"prev\">\n    <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\n    <span class=\"sr-only\">Previous</span>\n  </a>\n  <a class=\"right carousel-control\" href=\"#mycarousel\" role=\"button\" data-slide=\"next\">\n    <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\n    <span class=\"sr-only\">Next</span>\n  </a>\n</div>\n"
+
+/***/ },
+
+/***/ 860:
+/***/ function(module, exports) {
+
+module.exports = "<app-home-carousel></app-home-carousel>\n<h1>HerpTracker</h1>\n"
+
+/***/ },
+
+/***/ 861:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h4>Login</h4>\n  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\" (click)=\"activeModal.dismiss('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form name=\"form-inline\" (ngSubmit)=\"f.form.valid && login()\" #f=\"ngForm\" novalidate>\n      <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !username.valid }\">\n          <label class=\"sr-only\" for=\"username\">Username</label>\n          <input type=\"text\" placeholder=\"username\" class=\"form-control\" name=\"username\" [(ngModel)]=\"model.username\" #username=\"ngModel\" required />\n          <div *ngIf=\"f.submitted && !username.valid\" class=\"help-block\">Username is required</div>\n      </div>\n      <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !password.valid }\">\n          <label class=\"sr-only\" for=\"password\">Password</label>\n          <input placeholder=\"password\" type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\" required />\n          <div *ngIf=\"f.submitted && !password.valid\" class=\"help-block\">Password is required</div>\n      </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <div class=\"form-group\">\n    <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" (click)=\"activeModal.close('Close click')\">Cancel</button>\n    <button [disabled]=\"loading\" class=\"btn btn-primary\" (click)=\"login()\">Login</button>\n    <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n    <!--<a [routerLink]=\"['/register']\" class=\"btn btn-link\">Register</a>-->\n  </div>\n</div>\n"
+
+/***/ },
+
+/***/ 862:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\" *ngIf=\"project\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <h2>{{ project.$key }}</h2>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div [innerHtml]=\"sanitizer.bypassSecurityTrustHtml(project.description)\"></div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <masonry #myMasonry [options]=\"masonryOptions\" [useImagesLoaded]=\"true\">\n        <masonry-brick *ngFor=\"let animal of offspring | async; let i = index\" [hidden]=\"filterOffspring(animal, project.$key)\" class=\"brick card card-inverse\">\n          <img src=\"http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key.substr(-2)}}/001.jpg\" alt=\"{{animal.$key}}\"\n              *ngIf=\"animal.productOfProject\" class=\"card-img-top img-fluid\" />\n          <img src=\"http://beta.grreptile.com/assets/images/{{animal.dob | date: 'yy'}}/{{animal.$key}}/001.jpg\" alt=\"{{animal.$key}}\"\n              *ngIf=\"!animal.productOfProject\" class=\"card-img-top img-fluid\" />\n          <div class=\"card-block\">\n            <h5 class=\"card-title\">\n              {{ animal.$key }}\n            </h5>\n            <p class=\"card-text\" [innerHTML]=\"animal.description | truncate : [100]\"></p>\n            <a [routerLink]=\"['/animal', animal.$key]\" class=\"btn btn-primary\" *ngIf=\"animal.$key\">{{ animal.$key }}</a>\n          </div>\n        </masonry-brick>\n      </masonry>\n    </div>\n  </div>\n</div>\n\n<div class=\"container-fluid\" *ngIf=\"!project\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      Loading...\n    </div>\n  </div>\n</div>\n"
+
+/***/ },
+
+/***/ 863:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <masonry #myMasonry [options]=\"masonryOptions\" [useImagesLoaded]=\"true\">\n        <masonry-brick *ngFor=\"let project of projects | async\" class=\"brick card card-inverse\">\n          <img src=\"/assets/images/projects/{{project.$key}}/001.jpg\" [alt]=\"project.$key\" class=\"card-img-top img-fluid\">\n          <div class=\"card-block\">\n            <h4 class=\"card-title\">\n              {{ project.$key }} ({{project.eggs.hatched}})\n            </h4>\n            <p class=\"card-text\" [innerHTML]=\"project.description | truncate : [130]\"></p>\n            <a [routerLink]=\"['/project', project.$key]\" class=\"btn btn-primary\" *ngIf=\"project.$key\">{{ project.$key }}</a>\n          </div>\n        </masonry-brick>\n      </masonry>\n    </div>\n  </div>\n</div>\n"
+
+/***/ },
+
+/***/ 864:
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"container\">\n  <div class=\"card text-center\">\n    <div class=\"card-header\">\n      <ul class=\"nav nav-tabs card-header-tabs\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" [ngClass]=\"{'active': !isLoggedIn, 'disabled': isLoggedIn}\" data-toggle=\"tab\" href=\"#login\" role=\"tab\">Login</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" [ngClass]=\"{'disabled': isLoggedIn}\" data-toggle=\"tab\" href=\"#signup\" role=\"tab\">Sign Up</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" [ngClass]=\"{'active': isLoggedIn, 'disabled': !isLoggedIn}\" data-toggle=\"tab\" href=\"#logout\" role=\"tab\">Logout</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane card-block\" id=\"login\" [ngClass]=\"{'active': !isLoggedIn}\" role=\"tabpanel\">\n        <h4 class=\"card-title\">Login</h4>\n        <div class=\"card-text\">\n          <form novalidate (ngSubmit)=\"login()\" [formGroup]=\"loginForm\">\n            <div class=\"form-group row\">\n              <label for=\"email\" class=\"form-label col-md-3 text-right\">Email</label>\n              <input type=\"text\" class=\"form-control col-md-7\" id=\"email\" placeholder=\"Email\" formControlName=\"email\" />\n            </div>\n            <div class=\"form-group row\">\n              <label for=\"password\" class=\"form-label col-md-3 text-right\">Password</label>\n              <input type=\"password\" class=\"form-control col-md-7\" id=\"password\" formControlName=\"password\" />\n            </div>\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"login()\" [disabled]=\"!loginForm.valid\">Login</button>\n          </form>\n        </div>\n      </div>\n      <div class=\"tab-pane card-block\" id=\"signup\" role=\"tabpanel\">\n        <h4 class=\"card-title\">Sign Up</h4>\n        <div class=\"card-text\">\n          <form novalidate (ngSubmit)=\"signup()\" [formGroup]=\"signupForm\">\n            <div formGroupName=\"emailGroup\" [ngClass]=\"{'has-error': signupForm.get('emailGroup').errors }\" >\n              <div class=\"form-group row\" [ngClass]=\"{'has-error': emailMessage }\">\n                  <label class=\"col-md-3 control-label text-right\" for=\"emailId\">Email</label>\n                  <input type=\"email\" class=\"col-md-7 form-control\" id=\"emailId\" placeholder=\"Email (required)\" formControlName=\"email\" />\n              </div>\n              <div class=\"form-group row\" [ngClass]=\"{'has-error': emailMessage }\">\n                <label class=\"col-md-3 control-label text-right\" for=\"confirmEmailId\">Confirm Email</label>\n                  <input type=\"email\" class=\"col-md-7 form-control\" id=\"confirmEmailId\" placeholder=\"Confirm Email (required)\" formControlName=\"confirmEmail\" />\n              </div>\n              <div class=\"form-group row col-md-7 offset-md-3\" *ngIf=\"(signupForm.get('emailGroup.confirmEmail').touched ||\n                                                          signupForm.get('emailGroup.confirmEmail').dirty) &&\n                                                          (signupForm.get('emailGroup.confirmEmail').errors ||\n                                                            signupForm.get('emailGroup').errors)\">\n                <div class=\"alert alert-danger\" role=\"alert\">\n                  <span *ngIf=\"signupForm.get('emailGroup.confirmEmail').errors?.required\">Please confirm your email address.<br/></span>\n                  <span *ngIf=\"signupForm.get('emailGroup').errors?.match\">The confirmation does not match the email address.</span>\n                  {{ emailMessage }}\n                </div>\n              </div>\n            </div>\n\n            <div formGroupName=\"passwordGroup\" [ngClass]=\"{'has-error': signupForm.get('passwordGroup').errors }\" >\n              <div class=\"form-group row\" [ngClass]=\"{'has-error': signupForm.get('passwordGroup').errors }\">\n                <label for=\"password\" class=\"control-label col-md-3 text-right\">Password</label>\n                <input type=\"password\" formControlName=\"password\" class=\"form-control col-md-7\" id=\"password\" />\n              </div>\n              <div class=\"form-group row\" [ngClass]=\"{'has-error': signupForm.get('passwordGroup').errors }\">\n                <label for=\"confirmPassword\" class=\"control-label col-md-3 text-right\">Confirm Password</label>\n                <input type=\"password\" formControlName=\"confirmPassword\" class=\"form-control col-md-7\" id=\"confirmPassword\" />\n              </div>\n              <div class=\"form-group row col-md-7 offset-md-3\" *ngIf=\"(signupForm.get('passwordGroup.confirmPassword').touched ||\n                                                          signupForm.get('passwordGroup.confirmPassword').dirty) &&\n                                                          (signupForm.get('passwordGroup.confirmPassword').errors ||\n                                                            signupForm.get('passwordGroup').errors)\">\n                <div class=\"alert alert-danger\" role=\"alert\">\n                  <span *ngIf=\"signupForm.get('passwordGroup.confirmPassword').errors?.required\">Please confirm your password.<br/></span>\n                  <span *ngIf=\"signupForm.get('passwordGroup').errors?.match\">The confirmation does not match the password.</span>\n                </div>\n              </div>\n            </div>\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"signup()\" [disabled]=\"!signupForm.valid\">Sign Up</button>\n          </form>\n        </div>\n      </div>\n      <div class=\"tab-pane card-block\" [ngClass]=\"{'active': isLoggedIn}\" id=\"logout\" role=\"tabpanel\">\n        <h4 class=\"card-title\">Logout</h4>\n        <p class=\"card-text\">\n          Are you sure you want to logout?\n        </p>\n        <a href=\"#\" class=\"btn btn-primary\" (click)=\"logout()\">Logout</a>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
+
+/***/ },
+
+/***/ 865:
+/***/ function(module, exports) {
+
+module.exports = "<p>\n  users works!\n</p>\n"
+
+/***/ },
+
+/***/ 931:
+/***/ function(module, exports) {
+
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 931;
+
+
+/***/ },
+
+/***/ 932:
+/***/ function(module, exports, __webpack_require__) {
+
+__webpack_require__(531);
+module.exports = __webpack_require__(529);
+
+
+/***/ },
+
+/***/ 96:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AnimalService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AnimalService = (function () {
+    function AnimalService(af, db) {
+        this.af = af;
+        this.db = db;
+        this.animals = af.database.list('/animals');
+    }
+    AnimalService.prototype.getAnimals = function () {
+        return this.animals;
+    };
+    AnimalService.prototype.getAnimal = function (key) {
+        return this.af.database.object('/animals/' + key);
+    };
+    AnimalService.prototype.addAnimal = function (animal) {
+        return this.animals.push(animal);
+    };
+    AnimalService.prototype.updateAnimal = function (key, animal) {
+        return this.animals.update(key, animal);
+    };
+    AnimalService.prototype.deleteAnimal = function (key) {
+        return this.animals.remove(key);
+    };
+    AnimalService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0_angularfire2__["b" /* AngularFire */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0_angularfire2__["c" /* AngularFireDatabase */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0_angularfire2__["c" /* AngularFireDatabase */]) === 'function' && _b) || Object])
+    ], AnimalService);
+    return AnimalService;
+    var _a, _b;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/animal.service.js.map
+
+/***/ },
+
+/***/ 97:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_take__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_take___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_take__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UserService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+var UserService = (function () {
+    function UserService(auth, af, router) {
+        this.auth = auth;
+        this.af = af;
+        this.router = router;
+    }
+    UserService.prototype.isAuthenticated = function () {
+        var _this = this;
+        return this.auth.map(function (auth) {
+            if (!auth) {
+                _this.router.navigate(['/signup']);
+                return false;
+            }
+            return true;
+        }).take(1);
+    };
+    UserService.prototype.signUp = function (email, password) {
+        var _this = this;
+        var creds = { email: email, password: password };
+        var res = new Promise(function (resolve, reject) {
+            _this.auth.createUser(creds)
+                .then(function (authState) {
+                resolve(authState);
+            })
+                .catch(function (error) {
+                reject(error);
+            });
+        });
+        return res;
+    };
+    UserService.prototype.login = function (email, password) {
+        var _this = this;
+        var creds = { email: email, password: password };
+        var res = new Promise(function (resolve, reject) {
+            _this.auth.login(creds)
+                .then(function (result) { return resolve(result); }, function (error) { return reject(error); });
+        });
+        return res;
+    };
+    UserService.prototype.logout = function () {
+        this.auth.logout();
+    };
+    UserService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */])), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1_angularfire2__["a" /* FirebaseAuth */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2__["b" /* AngularFire */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1_angularfire2__["b" /* AngularFire */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === 'function' && _c) || Object])
+    ], UserService);
+    return UserService;
+    var _a, _b, _c;
+}());
+//# sourceMappingURL=F:/WebSites/Firebase_Samples/serverless-todo/src/user.service.js.map
+
+/***/ }
+
+},[932]);
+//# sourceMappingURL=main.bundle.map
